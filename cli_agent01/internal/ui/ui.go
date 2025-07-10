@@ -60,7 +60,7 @@ func PrintHeader() {
 func PrintErrorBox(errorOutput, aiAnalysis string) {
 	width := 80
 
-	fmt.Printf(" %s\n", ErrorColor("╭─[ ✗ Error ]"+strings.Repeat("─", width-16)))
+	fmt.Printf(" %s\n", ErrorColor("╭─[ Error ]"+strings.Repeat("─", width-16)))
 	fmt.Printf(" %s %s\n", BorderColor("│"), LabelColor("Error log:"))
 	for _, line := range strings.Split(strings.TrimSpace(errorOutput), "\n") {
 		fmt.Printf(" %s   %s\n", BorderColor("│"), ErrorColor(line))
