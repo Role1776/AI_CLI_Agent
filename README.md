@@ -9,7 +9,10 @@ AI CLI Agent is a powerful command-line assistant powered by Large Language Mode
 ![AI CLI Agent Screenshot](https://raw.githubusercontent.com/Role1776/AI_CLI_Agent/main/photo_2025-07-10_15-18-47.jpg)
 
 
-⚠️ Important Note: This tool is intended for educational purposes only. It is designed to simplify terminal workflows and help users understand command execution, but it should not be used in production environments or critical projects. It may contain bugs and is not optimized for performance.
+⚠️ **Important Note:** This tool is intended for educational purposes only. It is designed to simplify terminal workflows and help users understand command execution, but it should not be used in production environments or critical projects. It may contain bugs and is not optimized for performance.
+
+The goal of this project is to show that Go can be used to build AI-powered terminal tools — bridging the gap between modern LLMs and the command-line, without relying on Python or JavaScript.
+
 
 ## Features
 
