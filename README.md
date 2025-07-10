@@ -67,11 +67,6 @@ The goal of this project is to show that Go can be used to build AI-powered term
     go build -o cli-agent ./cmd/cli_agent
     ```
 
-4. **Run the CLI Agent:**
-
-    ```sh
-    ./cli-agent
-    ```
 
 ---
 
