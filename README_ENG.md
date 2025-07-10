@@ -85,11 +85,12 @@ Prefix your message with ! to get an AI answer without executing commands:
 
 ## Special Commands
 ### Command	Description
-/exit	Exit the program
-/clear	Clear the current session history
-/auto-true	Enable auto-execution mode (no confirmation)
-/auto-false	Disable auto-execution mode (default)
-
+ ```sh
+- /exit	        #Exit the program 
+- /clear	#Clear the current session history 
+- /auto-true	#Enable auto-execution mode (no confirmation) 
+- /auto-false	#Disable auto-execution mode (default) 
+ ```
     
 
     
