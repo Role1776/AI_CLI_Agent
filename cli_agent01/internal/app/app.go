@@ -142,10 +142,11 @@ func (a *App) handleSimpleChat(userInput string) {
 		return
 	}
 	spiner <- true
-	ui.SimpleResultBox(response)
-
-	a.history = append(a.history, Message{Role: "user", Content: userInput})
+  
+        a.history = append(a.history, Message{Role: "user", Content: userInput})
 	a.history = append(a.history, Message{Role: "assistant", Content: response})
+	
+	ui.SimpleResultBox(response)
 }
 
 func (a *App) handleAgentMode(userInput string, autoComplete bool) {
