@@ -4,6 +4,10 @@ AI CLI Agent is a powerful command-line assistant powered by Large Language Mode
 
 ---
 
+
+
+⚠️ Important Note: This tool is intended for educational purposes only. It is designed to simplify terminal workflows and help users understand command execution, but it should not be used in production environments or critical projects. It may contain bugs and is not optimized for performance.
+
 ## Features
 
 - **Dual Modes:**
