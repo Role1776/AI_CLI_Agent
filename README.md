@@ -39,3 +39,48 @@ Forget about googling PowerShell or bash syntax—just describe your task in nat
    ```sh
    git clone https://github.com/your-username/cli_agent.git
    cd cli_agent
+   
+2. Create configuration file:
+
+Create .env
+
+Fill in .env:
+
+API_URL: LLM provider API endpoint.
+
+API_TOKEN: Your API key.
+
+MODEL: AI model to use.
+
+RETRIES: Recommended value between 2 and 5.
+
+TIMEOUT_CLIENT: http timeout
+
+Build the application:
+
+    ```sh
+    go build -o cli-agent ./cmd/cli_agent
+
+Agent Mode (default)
+Type your request in natural language:
+
+    ```sh
+    > find all text files in the current directory
+
+The agent will generate the command, ask for confirmation, execute it, and provide a summary.
+
+Chat Mode
+Prefix your query with !:
+
+    ```sh
+    > !what are goroutines in Go?
+## Special Commands
+
+/exit	Exit the program
+/clear	Clear current session history
+/auto-true	Enable auto-execution mode (no confirmation)
+/auto-false	Disable auto-execution mode (default)    
+    
+
+    
+   
