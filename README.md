@@ -2,6 +2,8 @@
 
 AI CLI Agent is a powerful command-line assistant powered by Large Language Models (LLMs) designed to simplify your terminal workflow. It understands natural language requests, generates shell commands, and can autonomously propose, execute, and analyze system commands — no more googling bash or PowerShell syntax!
 
+Версия на русском https://github.com/Role1776/AI_CLI_Agent/blob/main/README_RU.md
+
 ---
 
 ![AI CLI Agent Screenshot](https://raw.githubusercontent.com/Role1776/AI_CLI_Agent/main/photo_2025-07-10_15-18-47.jpg)
