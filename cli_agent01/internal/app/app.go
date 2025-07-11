@@ -21,9 +21,46 @@ import (
 )
 
 const (
-	systemPromptBase            = "System Context:\n"
-	simpleChatPromptTemplate    = "You are an AI agent. Answer the user's question based on the information available. NEVER USE SMILEYS."
-	commandGenPromptTemplate    = "You are an AI agent. Your task is to generate commands based on the user's query. Answer only with the command, without extra words, explanations, and markdown formatting. Only raw command. Never use smileys. Try to generate commands that do not produce very long logs"
+	systemPromptBase         = "System Context:\n"
+	simpleChatPromptTemplate = "You are an AI agent. Answer the user's question based on the information available. NEVER USE SMILEYS."
+
+	commandGenPromptTemplate = `You are an AI agent expert in generating shell commands.
+Your task is to generate a SINGLE, RAW command based on the user's query.
+
+---
+**CRITICAL INSTRUCTIONS:**
+1.  Your output MUST be the raw command string and nothing else.
+2.  DO NOT include any explanations, extra words, or introductory phrases like "Here is the command:".
+3.  DO NOT wrap the command in markdown backticks (') or code blocks ('''_).
+
+---
+**EXAMPLES:**
+
+User: list all files in the current directory including hidden ones
+Correct AI Output:
+ls -a
+
+User: show all active docker containers
+Correct AI Output:
+docker ps
+
+User: find all processes with the name "nginx"
+Correct AI Output:
+ps aux | grep nginx
+
+User: list all running services on systemd
+Incorrect AI Output:
+'''bash
+systemctl list-units --type=service --state=running
+'''
+
+User: find text "hello world" in all files recursively
+Incorrect AI Output:
+Sure! Here is the command: 'grep -r "hello world" .'
+
+---
+Now, generate a command for the following user query. Remember all the rules.`
+
 	errorAnalysisPromptTemplate = "Analyze the error execution of command and explain simply what went wrong. Original query: '%s'. Error: '%s'"
 	summaryPromptTemplate       = "Briefly explain the result of executing the command, based on the original user query. Original query: '%s'. Command output: '%s'"
 )
@@ -142,19 +179,18 @@ func (a *App) handleSimpleChat(userInput string) {
 		return
 	}
 	spiner <- true
-  
-        a.history = append(a.history, Message{Role: "user", Content: userInput})
+
+	a.history = append(a.history, Message{Role: "user", Content: userInput})
 	a.history = append(a.history, Message{Role: "assistant", Content: response})
-	
 	ui.SimpleResultBox(response)
 }
-
 func (a *App) handleAgentMode(userInput string, autoComplete bool) {
 	attemptHistory := a.prepareAPImessages(commandGenPromptTemplate, userInput)
 	var lastError string
 	for i := 0; i < a.config.Retries; i++ {
 		spiner := ui.StartSpiner("Command generation...")
 		command, err := a.generateContent(attemptHistory)
+		fmt.Println(ui.AiColor(command))
 		spiner <- true
 
 		if err != nil {
@@ -200,6 +236,7 @@ func (a *App) handleAgentMode(userInput string, autoComplete bool) {
 			)
 			return
 		}
+
 		lastError = commandOutput
 		errorFeedback := fmt.Sprintf("This command did not work. Output was:\n%s\nTry another command.", commandOutput)
 		attemptHistory = append(attemptHistory, Message{Role: "user", Content: errorFeedback})
@@ -282,11 +319,20 @@ func isCommandPrefixed(input string) bool {
 }
 
 func cleanCommand(cmdStr string) string {
+	if lastIndex := strings.LastIndex(cmdStr, "Command:"); lastIndex != -1 {
+		cmdStr = cmdStr[lastIndex+len("Command:"):]
+	}
+
+	cmdStr = strings.TrimSpace(cmdStr)
+
 	cmdStr = strings.TrimPrefix(cmdStr, "```powershell")
 	cmdStr = strings.TrimPrefix(cmdStr, "```bash")
 	cmdStr = strings.TrimPrefix(cmdStr, "```")
 	cmdStr = strings.TrimSuffix(cmdStr, "```")
-	cmdStr = strings.TrimPrefix(cmdStr, "Command: ")
+	cmdStr = strings.TrimSpace(cmdStr)
+
+	cmdStr = strings.Trim(cmdStr, "`")
+	cmdStr = strings.TrimSpace(cmdStr)
 
 	if strings.HasPrefix(strings.ToLower(cmdStr), "powershell -command ") {
 		firstQuote := strings.Index(cmdStr, "\"")
@@ -294,7 +340,10 @@ func cleanCommand(cmdStr string) string {
 		if firstQuote != -1 && lastQuote > firstQuote {
 			cmdStr = cmdStr[firstQuote+1 : lastQuote]
 		}
+	} else if strings.HasPrefix(cmdStr, "& ") {
+		cmdStr = strings.TrimPrefix(cmdStr, "& ")
 	}
+
 	return strings.TrimSpace(cmdStr)
 }
 
