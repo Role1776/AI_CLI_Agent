@@ -190,7 +190,7 @@ func (a *App) handleAgentMode(userInput string, autoComplete bool) {
 	for i := 0; i < a.config.Retries; i++ {
 		spiner := ui.StartSpiner("Command generation...")
 		command, err := a.generateContent(attemptHistory)
-		fmt.Println(ui.AiColor(command))
+
 		spiner <- true
 
 		if err != nil {
