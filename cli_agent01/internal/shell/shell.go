@@ -42,7 +42,7 @@ func GetSystemInfo() string {
 	}
 
 	return fmt.Sprintf(
-		"System Context:\n- OS: %s\n- Shell: %s\n- User: %s\n- CWD: %s\n",
+		"\n- OS: %s\n- Shell: %s\n- User: %s\n- CWD: %s\n",
 		osName, shell, username, cwd,
 	)
 }
